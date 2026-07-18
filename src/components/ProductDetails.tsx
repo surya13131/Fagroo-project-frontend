@@ -79,6 +79,14 @@ export const ProductDetails = () => {
     return () => clearTimeout(timer);
   }, [quantity, product, id]);
 
+  const handleMobileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.target;
+    const numericValue = value.replace(/[^0-9]/g, '');
+    if (numericValue.length <= 10) {
+      setMobile(numericValue);
+    }
+  };
+
   const handleEnquirySubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!id || calcError || quantity === '') return;
@@ -354,7 +362,7 @@ export const ProductDetails = () => {
                       <label className="text-[10px] font-bold text-gray-500 uppercase">Mobile</label>
                       <input 
                         type="tel" required
-                        value={mobile} onChange={(e) => setMobile(e.target.value)}
+                        value={mobile} onChange={handleMobileChange}
                         className="w-full px-3 py-2 text-sm bg-white border border-gray-200 rounded-lg focus:ring-2 focus:ring-green-500/20 focus:border-green-500 outline-none" 
                       />
                     </div>
