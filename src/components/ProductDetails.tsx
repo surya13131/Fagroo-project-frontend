@@ -140,8 +140,8 @@ export const ProductDetails = () => {
       {/* Navbar */}
       <nav className="px-6 py-3 bg-green-900/90 backdrop-blur-md border-b border-white/10 sticky top-0 z-50">
         <div className="max-w-7xl mx-auto flex items-center">
-          <button 
-            onClick={() => navigate('/')} 
+          <button
+            onClick={() => navigate('/home')}
             className="flex items-center gap-2 px-3 py-1.5 text-xs font-bold text-white bg-white/10 border border-white/20 rounded-lg hover:bg-white hover:text-green-900 transition-colors"
           >
             &larr; Back to Store

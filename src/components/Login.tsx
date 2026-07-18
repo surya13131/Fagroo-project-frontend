@@ -33,10 +33,15 @@ export const Login = () => {
 
         const uid = auth.currentUser?.uid;
         if (uid) {
-          const snap = await getDoc(doc(db, "users", uid));
+          const userDocRef = doc(db, "users", uid);
+          const snap = await getDoc(userDocRef);
+
           if (snap.exists() && snap.data().role === "admin") {
+            // Admin logs in, no session expiry needed.
             navigate("/admin");
           } else {
+            // Buyer logs in, update their login time for session expiry.
+            await setDoc(userDocRef, { loginTime: Date.now() }, { merge: true });
             navigate("/home");
           }
         }
@@ -55,7 +60,8 @@ export const Login = () => {
           uid: userCredential.user.uid,
           name: name,
           email: email,
-          role: 'buyer' // Hardcoding default role as buyer
+          role: 'buyer', // Hardcoding default role as buyer
+          loginTime: Date.now()
         });
         
         navigate('/home'); // Redirect to Home on success
