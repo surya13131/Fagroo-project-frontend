@@ -2,14 +2,14 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { getAuth, createUserWithEmailAndPassword, updateProfile, type AuthError } from 'firebase/auth';
-import { getFirestore, doc, setDoc, getDoc } from 'firebase/firestore'; // Added Firestore imports
+import { getFirestore, doc, setDoc, getDoc } from 'firebase/firestore'; 
 
 export const Login = () => {
-  // Toggle state between Login and Register
+
   const [isLogin, setIsLogin] = useState<boolean>(true);
   
-  // Form state
-  const [name, setName] = useState<string>(''); // Only used for registration
+
+  const [name, setName] = useState<string>('');
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [error, setError] = useState<string>('');
@@ -56,14 +56,14 @@ export const Login = () => {
           const snap = await getDoc(userDocRef);
 
           if (snap.exists() && snap.data().role === "admin") {
-            // Admin logs in, no session expiry needed.
+
             navigate("/admin");
           } else {
             navigate("/home");
           }
         }
       } else {
-        // --- REGISTER FLOW ---
+      
         if (!name.trim()) {
           setError('Please enter your full name.');
           setLoading(false);
@@ -77,14 +77,14 @@ export const Login = () => {
         }
 
         const auth = getAuth();
-        const db = getFirestore(); // Initialize Firestore
+        const db = getFirestore(); 
         
         const userCredential = await createUserWithEmailAndPassword(auth, email, password);
         
-        // Update Firebase profile with the user's Name
+
         await updateProfile(userCredential.user, { displayName: name });
         
-        // Save the user document to Firestore (CRITICAL FOR ADMIN ROLE)
+
         await setDoc(doc(db, 'users', userCredential.user.uid), {
           uid: userCredential.user.uid,
           name: name,
@@ -92,7 +92,7 @@ export const Login = () => {
           role: 'buyer'
         });
         
-        navigate('/home'); // Redirect to Home on success
+        navigate('/home'); 
       }
     } catch (err: unknown) {
       setError(getAuthError((err as AuthError).code));
@@ -104,7 +104,7 @@ export const Login = () => {
 
   const toggleMode = () => {
     setIsLogin(!isLogin);
-    setError(''); // Clear any existing errors when switching modes
+    setError(''); 
   };
 
   return (
@@ -118,7 +118,7 @@ export const Login = () => {
         
         <form onSubmit={handleSubmit} className="space-y-4">
           
-          {/* Show Name field only if in Register mode */}
+     
           {!isLogin && (
             <div>
               <label className="block text-sm font-medium text-gray-700">Full Name</label>
@@ -165,7 +165,6 @@ export const Login = () => {
           </button>
         </form>
 
-        {/* Toggle between Login and Register modes */}
         <p className="mt-4 text-sm text-center text-gray-600">
           {isLogin ? "Don't have an account? " : "Already have an account? "}
           <button 

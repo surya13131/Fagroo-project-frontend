@@ -26,7 +26,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       
       if (user) {
         try {
-          // Fetch the user's document from Firestore to determine their role
+      
           const userDocRef = doc(db, 'users', user.uid);
           const userDocSnap = await getDoc(userDocRef);
           

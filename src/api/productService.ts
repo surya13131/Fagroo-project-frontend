@@ -1,10 +1,6 @@
 import api from "./axios";
 import type { Product, CalculationResult } from "../types"; 
 
-// ==========================================
-// PUBLIC FUNCTIONS
-// ==========================================
-
 export const getProducts = async (): Promise<Product[]> => {
   const response = await api.get("/products");
   return response.data.data;
@@ -20,9 +16,6 @@ export const calculatePrice = async (productId: string, quantity: number): Promi
   return response.data.data;
 };
 
-// ==========================================
-// CATEGORY FUNCTIONS
-// ==========================================
 
 export const getCategories = async () => {
   const response = await api.get('/categories');
@@ -34,9 +27,7 @@ export const createCategory = async (categoryData: { name: string; description?:
   return response.data.data || response.data;
 };
 
-// ==========================================
-// ADMIN FUNCTIONS
-// ==========================================
+
 
 export const getDashboardStats = async () => {
   const response = await api.get('/admin/dashboard');
@@ -68,9 +59,6 @@ export const updateDiscount = async (id: string, discount: number) => {
   return response.data.data;
 };
 
-// ==========================================
-// ADMIN: PRODUCT STATUS & LIFECYCLE
-// ==========================================
 
 export const activateProduct = async (id: string) => {
   const response = await api.patch(`/admin/products/${id}/activate`);

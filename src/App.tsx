@@ -13,10 +13,10 @@ function App() {
     <AuthProvider>
       <Router>
         <Routes>
-          {/* Login */}
+   
           <Route path="/" element={<Login />} />
           
-          {/* Buyer */}
+  
           <Route 
             path="/home" 
             element={
@@ -26,7 +26,7 @@ function App() {
             } 
           />
 
-          {/* Product Details */}
+
           <Route 
             path="/product/:id" 
             element={
@@ -36,7 +36,7 @@ function App() {
             } 
           />
 
-          {/* Admin-Only Route */}
+          
           <Route 
             path="/admin" 
             element={
@@ -45,8 +45,7 @@ function App() {
               </ProtectedRoute>
             } 
           />
-          
-          {/* Fallback to login */}
+
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </Router>

@@ -16,25 +16,24 @@ import { getAdminEnquiries } from '../api/enquiryService';
 export const AdminDashboard = () => {
   const navigate = useNavigate();
 
-  // --- API Data States ---
   const [stats, setStats] = useState({ total: 0, active: 0, enquiries: 0 });
   const [products, setProducts] = useState<any[]>([]);
   const [enquiries, setEnquiries] = useState<any[]>([]);
   
-  // --- Category States ---
+
   const [categories, setCategories] = useState<{id: string, name: string}[]>([]);
   const [showNewCategory, setShowNewCategory] = useState(false);
   const [newCategoryName, setNewCategoryName] = useState('');
   const [categoryLoading, setCategoryLoading] = useState(false);
 
-  // --- Form States ---
+
   const [loading, setLoading] = useState<boolean>(false);
   const [editModeId, setEditModeId] = useState<string | null>(null);
 
-  // Notifications
+
   const [toast, setToast] = useState<{ type: 'success' | 'error', message: string } | null>(null);
 
-  // Product Fields (Using number | '' to prevent forcing '0' when deleting)
+
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [price, setPrice] = useState<number | ''>('');
@@ -46,11 +45,10 @@ export const AdminDashboard = () => {
   const [minimumQty, setMinimumQty] = useState<number | ''>(1);
   const [image, setImage] = useState('');
 
-  // --- Inline Editing States (For Table) ---
   const [inlineStockEdit, setInlineStockEdit] = useState<{id: string, val: number | ''} | null>(null);
   const [inlineDiscountEdit, setInlineDiscountEdit] = useState<{id: string, val: number | ''} | null>(null);
 
-  // --- Initial Data Fetch ---
+
   const fetchDashboardData = async () => {
     try {
       const [statsData, productsData, enquiriesData] = await Promise.all([
@@ -85,7 +83,6 @@ export const AdminDashboard = () => {
     fetchCategories();
   }, []);
 
-  // --- Toast Notification Helper (Disappears after 2 secs) ---
   const showToast = (type: 'success' | 'error', message: string) => {
     setToast({ type, message });
     setTimeout(() => {
@@ -154,7 +151,7 @@ export const AdminDashboard = () => {
         showToast('success', 'Product added successfully!');
       }
       
-      // Reset form
+
       setName(''); setDescription(''); setPrice(''); setCategory(''); setSeller(''); 
       setLocation(''); setDiscount(0); setAvailableQty(''); setMinimumQty(1); 
       setImage('');
@@ -236,7 +233,7 @@ export const AdminDashboard = () => {
   return (
     <div className="min-h-screen p-4 md:p-6 bg-[#f3f6f4] font-sans relative">
       
-      {/* FLOATING TOAST NOTIFICATION (Disappears automatically) */}
+      
       {toast && (
         <div className={`fixed top-6 left-1/2 -translate-x-1/2 z-[100] px-6 py-3 rounded-full font-bold text-sm shadow-xl flex items-center gap-2 animate-fade-in-down ${
           toast.type === 'success' ? 'bg-green-600 text-white shadow-green-500/30' : 'bg-red-600 text-white shadow-red-500/30'
@@ -247,7 +244,7 @@ export const AdminDashboard = () => {
 
       <div className="w-full max-w-[1600px] mx-auto space-y-6">
         
-        {/* Header */}
+    
         <div className="flex items-center justify-between p-5 text-white bg-green-900 rounded-2xl shadow-sm">
           <div>
             <h2 className="text-2xl font-black tracking-tight">Admin Dashboard</h2>
@@ -258,7 +255,7 @@ export const AdminDashboard = () => {
           </button>
         </div>
 
-        {/* Stats Row */}
+
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
           {[
             { label: 'Total Products', val: stats.total, color: 'text-blue-600', bg: 'bg-blue-50' },
@@ -278,10 +275,10 @@ export const AdminDashboard = () => {
           ))}
         </div>
 
-        {/* Main Layout Grid */}
+
         <div className="grid grid-cols-1 xl:grid-cols-12 gap-6 items-start">
           
-          {/* LEFT: Add/Edit Product Form */}
+          
           <div className="xl:col-span-4 bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden sticky top-6">
             <div className={`p-4 ${editModeId ? 'bg-blue-600' : 'bg-gray-900'} text-white flex justify-between items-center`}>
               <h3 className="text-sm font-bold flex items-center gap-2">
@@ -302,7 +299,7 @@ export const AdminDashboard = () => {
                     className="w-full px-3 py-2 text-sm border border-gray-200 rounded-xl focus:ring-2 focus:ring-green-500 outline-none bg-gray-50 transition-all" />
                 </div>
                 
-                {/* Fixed Custom Select Arrow */}
+              
                 <div className="p-3 bg-gray-50/50 rounded-xl border border-gray-200/60">
                   <label className="text-[10px] font-bold text-gray-500 uppercase tracking-wider pl-1 mb-1 block">Category</label>
                   <select 
@@ -396,10 +393,10 @@ export const AdminDashboard = () => {
             </div>
           </div>
 
-          {/* RIGHT: Tables Container */}
+          
           <div className="xl:col-span-8 flex flex-col gap-6">
             
-            {/* Products Table */}
+     
             <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden flex flex-col">
               <div className="p-4 bg-gray-50 border-b border-gray-100 flex justify-between items-center">
                 <h3 className="text-sm font-bold text-gray-800">Inventory Management</h3>
@@ -507,7 +504,7 @@ export const AdminDashboard = () => {
               </div>
             </div>
 
-            {/* Enquiries Table */}
+
             <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden flex flex-col">
               <div className="p-4 bg-purple-50/50 border-b border-purple-100 flex justify-between items-center">
                 <h3 className="text-sm font-bold text-purple-900">Buyer Enquiries</h3>

@@ -5,24 +5,24 @@ import type { Product } from '../types';
 import { useAuth } from '../context/AuthContext';
 
 export const Home = () => {
-  // --- Auth & Router ---
+
   const { logout, currentUser, userRole } = useAuth();
   const [searchParams, setSearchParams] = useSearchParams();
 
-  // --- States ---
+
   const [products, setProducts] = useState<Product[]>([]);
   const [categories, setCategories] = useState<{id: string, name: string}[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string>('');
 
-  // --- URL Query Parameters ---
+
   const searchQuery = searchParams.get('search') || '';
   const categoryFilter = searchParams.get('category') || '';
   const sellerFilter = searchParams.get('seller') || '';
   const locationFilter = searchParams.get('location') || '';
   const sortOption = searchParams.get('sort') || '';
 
-  // --- Data Fetching ---
+
   useEffect(() => {
     const fetchInitialData = async () => {
       try {
@@ -43,7 +43,7 @@ export const Home = () => {
     fetchInitialData();
   }, []);
 
-  // --- Param Handlers ---
+
   const updateParams = (key: string, value: string) => {
     const newParams = new URLSearchParams(searchParams);
     if (value.trim()) {
@@ -58,7 +58,7 @@ export const Home = () => {
     setSearchParams(new URLSearchParams());
   };
 
-  // --- Filtering & Sorting Logic ---
+  
   const filteredProducts = products.filter((p) => {
     const matchesSearch = p.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
                           (p.category && p.category.toLowerCase().includes(searchQuery.toLowerCase()));
@@ -81,7 +81,7 @@ export const Home = () => {
   return (
     <div className="min-h-screen bg-[#f3f6f4] font-sans overflow-x-hidden">
       
-      {/* --- GLASSMORPHIC NAVBAR --- */}
+ 
       <nav className="flex items-center justify-between px-5 lg:px-10 py-3.5 bg-green-900/90 backdrop-blur-md border-b border-white/10 shadow-lg sticky top-0 z-50">
         <div className="flex items-center gap-3">
           <div className="w-9 h-9 bg-gradient-to-tr from-green-400 to-yellow-300 rounded-lg shadow-md flex items-center justify-center text-green-950 font-black text-lg">
@@ -112,10 +112,10 @@ export const Home = () => {
         </div>
       </nav>
 
-      {/* --- FULL-WIDTH MAIN CONTENT --- */}
+
       <main className="w-full max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-10 py-8">
         
-        {/* Header Text */}
+
         <div className="mb-6 text-center sm:text-left">
           <h2 className="text-3xl sm:text-4xl font-black text-gray-900 tracking-tight mb-2">
             Fresh Arrivals
@@ -123,10 +123,10 @@ export const Home = () => {
           <p className="text-sm text-gray-500 font-medium">Discover premium agricultural products directly from trusted sellers.</p>
         </div>
 
-        {/* --- STICKY GLASSMORPHIC SEARCH & FILTERS BAR --- */}
+
         <div className="bg-white/70 backdrop-blur-xl p-4 rounded-2xl shadow-[0_4px_20px_rgb(0,0,0,0.04)] border border-white flex flex-col lg:flex-row gap-4 items-center justify-between mb-4 sticky top-[72px] z-40 transition-all">
           
-          {/* Search Bar */}
+
           <div className="w-full lg:w-1/3 relative group">
             <svg className="absolute left-3.5 top-2.5 w-4 h-4 text-gray-400 group-focus-within:text-green-600 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
@@ -143,10 +143,10 @@ export const Home = () => {
             )}
           </div>
 
-          {/* Filters & Sort */}
+  
           <div className="w-full lg:w-auto flex flex-wrap gap-2.5 items-center justify-center">
             
-            {/* Custom Arrow Select: Category */}
+     
             <select 
               value={categoryFilter} 
               onChange={(e) => updateParams('category', e.target.value)}
@@ -177,7 +177,7 @@ export const Home = () => {
 
             <div className="hidden lg:block w-px h-6 bg-gray-300/60 mx-1"></div>
 
-            {/* Custom Arrow Select: Sort */}
+
             <select 
               value={sortOption} 
               onChange={(e) => updateParams('sort', e.target.value)}
@@ -191,7 +191,7 @@ export const Home = () => {
           </div>
         </div>
 
-        {/* --- ACTIVE FILTER PILLS --- */}
+    
         {hasActiveFilters && (
           <div className="flex flex-wrap items-center gap-2 mb-8 px-1">
             <span className="text-[11px] font-bold text-gray-400 uppercase tracking-wider mr-1">Active Filters:</span>
@@ -230,7 +230,7 @@ export const Home = () => {
           </div>
         )}
 
-        {/* Loading Spinner */}
+  
         {loading && (
           <div className="flex flex-col items-center justify-center py-20">
             <div className="w-10 h-10 border-4 border-green-200 border-t-green-600 rounded-full animate-spin"></div>
@@ -238,14 +238,14 @@ export const Home = () => {
           </div>
         )}
 
-        {/* Error Handling */}
+
         {error && (
           <div className="p-4 mb-8 text-sm text-red-700 bg-red-50 border border-red-200 rounded-xl font-bold flex items-center justify-center gap-2">
              <span>⚠️</span> {error}
           </div>
         )}
 
-        {/* Empty State */}
+
         {!loading && !error && filteredProducts.length === 0 && (
           <div className="text-center py-20 bg-white/50 backdrop-blur-sm rounded-3xl shadow-sm border border-white font-medium flex flex-col items-center justify-center">
             <div className="text-5xl mb-4 drop-shadow-sm">🔍</div>
@@ -262,7 +262,7 @@ export const Home = () => {
           </div>
         )}
 
-        {/* --- ADAPTIVE GRID FOR FULL WIDTH --- */}
+
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 mt-4">
           {filteredProducts.map((product) => {
             const hasDiscount = product.discount && product.discount > 0;
@@ -273,7 +273,7 @@ export const Home = () => {
             return (
               <div key={product._id} className="relative flex flex-col bg-white/70 backdrop-blur-sm border border-white rounded-2xl shadow-sm hover:shadow-[0_10px_25px_-5px_rgba(22,163,74,0.15)] hover:-translate-y-1 transition-all duration-300 group overflow-hidden">
                 
-                {/* Image Container */}
+
                 <div className="relative h-48 bg-gray-100 overflow-hidden m-1.5 rounded-xl">
                   {product.image ? (
                     <img src={product.image} alt={product.name} className="block w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out" />
@@ -281,7 +281,7 @@ export const Home = () => {
                     <div className="flex items-center justify-center h-full text-gray-400 text-xs font-medium bg-gray-200">No Image</div>
                   )}
                   
-                  {/* Glassmorphic Discount Badge */}
+           
                   {hasDiscount && (
                     <div className="absolute top-2.5 right-2.5 px-2 py-1 text-[10px] font-black text-white bg-red-600/90 backdrop-blur-md rounded-md shadow-sm border border-red-400/30 tracking-wide">
                       {product.discount}% OFF
@@ -289,18 +289,18 @@ export const Home = () => {
                   )}
                 </div>
 
-                {/* Product Details */}
+           
                 <div className="p-4 flex flex-col flex-grow">
                   <h3 className="text-lg font-black text-gray-900 line-clamp-1 group-hover:text-green-700 transition-colors" title={product.name}>
                     {product.name}
                   </h3>
 
-                  {/* Category Pill */}
+            
                   <span className="inline-block mt-1.5 w-fit px-2 py-0.5 bg-green-50 text-green-700 text-[9px] font-black tracking-widest uppercase rounded border border-green-200/50">
                     {product.category || 'General'}
                   </span>
                   
-                  {/* Seller & Location Info */}
+            
                   <div className="mt-3 space-y-0.5">
                     <p className="text-[11px] text-gray-500 flex items-center gap-1.5 truncate">
                       <span className="text-gray-400">👤</span>
@@ -312,7 +312,7 @@ export const Home = () => {
                     </p>
                   </div>
                   
-                  {/* Pricing Display */}
+                 
                   <div className="mt-4 flex items-end gap-1.5">
                     {hasDiscount ? (
                       <>
@@ -324,7 +324,6 @@ export const Home = () => {
                     )}
                   </div>
 
-                  {/* Glassy Stats Grid */}
                   <div className="grid grid-cols-2 gap-2 mt-4 p-2.5 bg-gray-50/80 rounded-xl border border-gray-100 text-xs">
                     <div className="flex flex-col justify-center">
                       <span className="font-bold text-gray-400 uppercase tracking-widest text-[8px] mb-0.5">Stock</span>

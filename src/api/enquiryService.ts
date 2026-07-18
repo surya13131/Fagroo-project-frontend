@@ -1,6 +1,5 @@
 import api from './axios';
 
-// Updated to match the fields sent from ProductDetails.tsx and expected by the backend
 export interface EnquiryPayload {
   productId: string;
   buyerName: string;
@@ -16,7 +15,6 @@ export const createEnquiry = async (enquiryData: EnquiryPayload) => {
   return response.data.data || response.data;
 };
 
-// Admin: Fetch all enquiries
 export const getAdminEnquiries = async () => {
   const response = await api.get('/enquiries/admin');
   return response.data.data || response.data;
