@@ -40,7 +40,7 @@ export const ProductDetails = () => {
         setQuantity(data.minimumQty); 
       } catch (err: any) {
         console.error(err);
-        setPageError(err.response?.data?.message || 'Failed to load product details.');
+        setPageError(err.response?.data?.message || 'Failed to load product.');
       } finally {
         setLoading(false);
       }
@@ -107,7 +107,7 @@ export const ProductDetails = () => {
       
     } catch (err: any) {
       setEnquiryStatus('error');
-      setEnquiryError(err.response?.data?.message || 'Failed to submit enquiry.');
+      setEnquiryError(err.response?.data?.message || 'Unable to submit enquiry. Please try again.');
     }
   };
 

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { getAuth, createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
+import { getAuth, createUserWithEmailAndPassword, updateProfile, type AuthError } from 'firebase/auth';
 import { getFirestore, doc, setDoc, getDoc } from 'firebase/firestore'; // Added Firestore imports
 
 export const Login = () => {
@@ -17,6 +17,25 @@ export const Login = () => {
   
   const { login } = useAuth();
   const navigate = useNavigate();
+
+  const getAuthError = (code: string) => {
+    switch (code) {
+      case 'auth/invalid-credential':
+      case 'auth/user-not-found':
+      case 'auth/wrong-password':
+        return 'Invalid email or password.';
+      case 'auth/invalid-email':
+        return 'Please enter a valid email address.';
+      case 'auth/email-already-in-use':
+        return 'This email is already registered.';
+      case 'auth/weak-password':
+        return 'Password must be at least 6 characters.';
+      case 'auth/network-request-failed':
+        return 'Network error. Please check your internet connection.';
+      default:
+        return 'Something went wrong. Please try again.';
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -40,13 +59,23 @@ export const Login = () => {
             // Admin logs in, no session expiry needed.
             navigate("/admin");
           } else {
-            // Buyer logs in, update their login time for session expiry.
-            await setDoc(userDocRef, { loginTime: Date.now() }, { merge: true });
             navigate("/home");
           }
         }
       } else {
         // --- REGISTER FLOW ---
+        if (!name.trim()) {
+          setError('Please enter your full name.');
+          setLoading(false);
+          return;
+        }
+
+        if (password.length < 6) {
+          setError('Password must be at least 6 characters.');
+          setLoading(false);
+          return;
+        }
+
         const auth = getAuth();
         const db = getFirestore(); // Initialize Firestore
         
@@ -60,14 +89,13 @@ export const Login = () => {
           uid: userCredential.user.uid,
           name: name,
           email: email,
-          role: 'buyer', // Hardcoding default role as buyer
-          loginTime: Date.now()
+          role: 'buyer'
         });
         
         navigate('/home'); // Redirect to Home on success
       }
-    } catch (err: any) {
-      setError(err.message || (isLogin ? 'Failed to log in.' : 'Failed to register.'));
+    } catch (err: unknown) {
+      setError(getAuthError((err as AuthError).code));
       console.error(err);
     } finally {
       setLoading(false);

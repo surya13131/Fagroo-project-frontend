@@ -117,7 +117,7 @@ export const AdminDashboard = () => {
       setNewCategoryName('');
       showToast('success', 'Category added successfully');
     } catch (err: any) {
-      showToast('error', err.response?.data?.message || "Failed to add new category.");
+      showToast('error', err.response?.data?.message || 'Failed to add new category.');
     } finally {
       setCategoryLoading(false);
     }
@@ -161,7 +161,7 @@ export const AdminDashboard = () => {
 
       fetchDashboardData(); 
     } catch (err: any) {
-      showToast('error', err.response?.data?.message || 'Action failed.');
+      showToast('error', err.response?.data?.message || 'Something went wrong. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -182,8 +182,8 @@ export const AdminDashboard = () => {
       await activateProduct(id);
       showToast('success', 'Product Activated');
       fetchDashboardData();
-    } catch {
-      showToast('error', 'Failed to activate');
+    } catch (err: any) {
+      showToast('error', err.response?.data?.message || 'Failed to activate product.');
     }
   };
 
@@ -193,8 +193,8 @@ export const AdminDashboard = () => {
       await deactivateProduct(id);
       showToast('success', 'Product Deactivated');
       fetchDashboardData();
-    } catch {
-      showToast('error', 'Failed to deactivate');
+    } catch (err: any) {
+      showToast('error', err.response?.data?.message || 'Failed to deactivate product.');
     }
   };
 
@@ -204,8 +204,8 @@ export const AdminDashboard = () => {
       await deleteProduct(id);
       showToast('success', 'Product Deleted');
       fetchDashboardData();
-    } catch (err) {
-      showToast('error', 'Failed to delete product');
+    } catch (err: any) {
+      showToast('error', err.response?.data?.message || 'Failed to delete product.');
     }
   };
 
@@ -216,7 +216,9 @@ export const AdminDashboard = () => {
       setInlineStockEdit(null);
       showToast('success', 'Stock updated');
       fetchDashboardData();
-    } catch (err) { showToast('error', 'Failed to update stock'); }
+    } catch (err: any) {
+      showToast('error', err.response?.data?.message || 'Failed to update stock.');
+    }
   };
 
   const saveInlineDiscount = async (id: string) => {
@@ -226,7 +228,9 @@ export const AdminDashboard = () => {
       setInlineDiscountEdit(null);
       showToast('success', 'Discount updated');
       fetchDashboardData();
-    } catch (err) { showToast('error', 'Failed to update discount'); }
+    } catch (err: any) {
+      showToast('error', err.response?.data?.message || 'Failed to update discount.');
+    }
   };
 
   return (
